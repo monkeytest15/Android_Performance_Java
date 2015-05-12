@@ -1,17 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class VssInfo {
 
-	private static float getTotalVSSInfo(String sn, String VSSInfo, int VSSIndex) {
+	private static float getTotalVSSInfo(String sn, String VSSInfo,
+			int VSSIndex, String PackageName) {
 		float vss = 0;
-		int start = 0;
-		int vss_index = 0;
-		String[] character = null;
+		List dataList = new ArrayList();
+		List dataList2 = new ArrayList();
 
 		try {
 			String data[] = VSSInfo.split("\\s+");
+			for (int i = 0; i < data.length; i++) {
+				dataList.add(data[i]);
+			}
 
-			vss = Float.parseFloat(data[VSSIndex].substring(0,
-					data[VSSIndex].length() - 1));
-
+			for (int i = 0; i < dataList.indexOf(PackageName); i++) {
+				if (dataList.get(i).toString().contains("K")) {
+					dataList2.add(dataList.get(i));
+				}
+			}
+			vss = Float.parseFloat((dataList2.get(0).toString().substring(0,
+					dataList2.get(0).toString().length() - 1)));
 		} catch (Exception ex) {
 			vss = 0;
 		}
@@ -54,7 +64,7 @@ public class VssInfo {
 				+ sn + " shell top | grep " + packageName;
 		String cpuInfo = ADBShell.sendADB(TOP_CPUINFO, 5000);
 
-		float vssData = getTotalVSSInfo(sn, cpuInfo, VssIndex);
+		float vssData = getTotalVSSInfo(sn, cpuInfo, VssIndex,packageName);
 		return vssData;
 	}
 }

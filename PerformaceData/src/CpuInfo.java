@@ -1,16 +1,28 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class CpuInfo {
 
-	private static float getTotalCPUInfo(String sn, String cpuInfo, int CpuIndex) {
+	private static float getTotalCPUInfo(String sn, String cpuInfo,
+			int CpuIndex, String PackageName) {
 		float cpu = 0;
-		int start = 0;
-		int cpu_index = 0;
-		String[] character = null;
+		List dataList = new ArrayList();
+
+		String result = "";
 
 		try {
 			String data[] = cpuInfo.split("\\s+");
-			cpu = Float.parseFloat(data[CpuIndex].substring(0,
-					data[CpuIndex].length() - 1));
+			for (int i = 0; i < data.length; i++) {
+				dataList.add(data[i]);
+			}
 
+			for (int i = 0; i < dataList.indexOf(PackageName); i++) {
+				if (dataList.get(i).toString().contains("%")) {
+					cpu = Float.parseFloat((dataList.get(i).toString()
+							.substring(0,
+									dataList.get(i).toString().length() - 1)));
+				}
+			}
 
 		} catch (Exception ex) {
 			cpu = 0;
@@ -54,7 +66,7 @@ public class CpuInfo {
 				+ sn + " shell top | grep " + packageName;
 		String cpuInfo = ADBShell.sendADB(TOP_CPUINFO, 5000);
 
-		float cpuData = getTotalCPUInfo(sn, cpuInfo, CpuIndex);
+		float cpuData = getTotalCPUInfo(sn, cpuInfo, CpuIndex, packageName);
 		return cpuData;
 	}
 }

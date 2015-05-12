@@ -1,16 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RssInfo {
 
-	private static float getTotalRSSInfo(String sn, String RSSInfo, int RSSIndex) {
+	private static float getTotalRSSInfo(String sn, String RSSInfo, int RSSIndex,String PackageName) {
 		float rss = 0;
 		int start = 0;
 		int rss_index = 0;
 		String[] character = null;
+		List dataList = new ArrayList();
+		List dataList2 = new ArrayList();
 
 		try {
 			String data[] = RSSInfo.split("\\s+");
+			for (int i = 0; i < data.length; i++) {
+				dataList.add(data[i]);
+			}
 
-			rss = Float.parseFloat(data[RSSIndex].substring(0,
-					data[RSSIndex].length() - 1));
+			for (int i = 0; i < dataList.indexOf(PackageName); i++) {
+				if (dataList.get(i).toString().contains("K")) {
+					dataList2.add(dataList.get(i));
+				}
+			}
+			rss = Float.parseFloat((dataList2.get(1).toString().substring(0,
+					dataList2.get(1).toString().length() - 1)));
 
 		} catch (Exception ex) {
 			rss = 0;
@@ -31,7 +44,7 @@ public class RssInfo {
 		String line = rssInfo.substring(begin_index, end_index);
 		String test[] = line.split("\\s+");
 		for (int i = 0; i < test.length; i++) {
-			
+
 			if (test[i].equals("RSS")) {
 
 				rss_index = i;
@@ -55,7 +68,7 @@ public class RssInfo {
 				+ sn + " shell top | grep " + packageName;
 		String rssInfo = ADBShell.sendADB(TOP_RSSINFO, 5000);
 
-		float rssData = getTotalRSSInfo(sn, rssInfo, RssIndex);
+		float rssData = getTotalRSSInfo(sn, rssInfo, RssIndex,packageName);
 		return rssData;
 	}
 }
