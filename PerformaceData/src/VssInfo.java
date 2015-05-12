@@ -9,8 +9,8 @@ public class VssInfo {
 		try {
 			String data[] = VSSInfo.split("\\s+");
 
-			vss = Float.parseFloat(data[VSSIndex + 1].substring(0,
-					data[VSSIndex + 1].length() - 1));
+			vss = Float.parseFloat(data[VSSIndex].substring(0,
+					data[VSSIndex].length() - 1));
 
 		} catch (Exception ex) {
 			vss = 0;

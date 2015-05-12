@@ -57,7 +57,9 @@ public class StartPerformaceMonitor implements Runnable {
 			}
 
 			resultList.put("anyproxyData", anyproxyData + "");
-
+			float pss = PssInfo.getPssData(this.sn, this.PackageName);
+			resultList.put("PssMemory", pss + "kb");
+			System.out.println("pss内存占用率" + pss + "kb");
 			// traffic
 			String traffic = TrafficInfo.getTrafficData(this.sn,
 					this.PackageName);
@@ -72,8 +74,9 @@ public class StartPerformaceMonitor implements Runnable {
 			resultList.put("cachesize", size[0]);
 			resultList.put("datasize", size[1]);
 			resultList.put("codesize", size[2]);
-			System.out.println("应用缓存占用量：" + size[0] + "kb" + "应用数据占用量："
-					+ size[1] + "kb" + "应用代码占用量" + size[2] + "kb");
+			System.out.println("应用缓存占用量："
+					+ size[0].substring(0, size[0].length() - 2) + "kb"
+					+ "应用数据占用量：" + size[1] + "kb" + "应用代码占用量" + size[2] + "kb");
 
 			// cpu
 
@@ -95,6 +98,14 @@ public class StartPerformaceMonitor implements Runnable {
 
 			System.out.println("rss内存占用率" + rss + "kb");
 
+			try {
+				Thread.sleep(4000);
+
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			// write
 			fileUtils.writeFile(this.filePath, JsonUtil.toJson(resultList)
 					+ "\n", true);
@@ -106,7 +117,7 @@ public class StartPerformaceMonitor implements Runnable {
 
 		StartPerformaceMonitor monitor = new StartPerformaceMonitor(
 				"/Users/monkey/Documents/open_source/test.txt",
-				"05e323b600451130", "com.android.chrome");
+				"4df7849e72accf05", "com.android.chrome");
 		monitor.run();
 
 	}

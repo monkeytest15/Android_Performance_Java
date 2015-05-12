@@ -8,9 +8,9 @@ public class CpuInfo {
 
 		try {
 			String data[] = cpuInfo.split("\\s+");
+			cpu = Float.parseFloat(data[CpuIndex].substring(0,
+					data[CpuIndex].length() - 1));
 
-			cpu = Float.parseFloat(data[CpuIndex + 1].substring(0,
-					data[CpuIndex + 1].length() - 1));
 
 		} catch (Exception ex) {
 			cpu = 0;

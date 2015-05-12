@@ -9,8 +9,8 @@ public class RssInfo {
 		try {
 			String data[] = RSSInfo.split("\\s+");
 
-			rss = Float.parseFloat(data[RSSIndex + 1].substring(0,
-					data[RSSIndex + 1].length() - 1));
+			rss = Float.parseFloat(data[RSSIndex].substring(0,
+					data[RSSIndex].length() - 1));
 
 		} catch (Exception ex) {
 			rss = 0;
